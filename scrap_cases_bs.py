@@ -15,12 +15,11 @@ with open('cases_assignment_with_bs.csv', 'w', newline='') as csvfile:
                          "Petitioner(s)",
                          "Respondent(s)",
                          "Pet. Advocate(s)",
-                         "Resp. Advocate(s)",
-                         "U/Section"])
+                         "Resp. Advocate(s)"])
     
 
 for year in range(2021,2001,-1):
-    for diary_number in range(1,100):
+    for diary_number in range(1,101):
         print("Diary: {} Year: {}".format(diary_number, year))
         with requests.session() as case_session:
 
@@ -48,7 +47,10 @@ for year in range(2021,2001,-1):
                 tds = soup.find('table').findAll("td")
                 table_data=[]
                 for i in range(1,21,2):
-                    table_data.append(tds[i].text)
+                    if tds[i].text == '':
+                        table_data.append('N/A')
+                    else:
+                        table_data.append(tds[i].text.strip())
                 with open('cases_assignment_with_bs.csv', 'a', newline='') as csvfile:
                     file_writer = csv.writer(csvfile)
                     file_writer.writerow(table_data)
